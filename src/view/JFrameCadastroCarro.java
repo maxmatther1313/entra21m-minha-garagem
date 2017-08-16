@@ -86,7 +86,6 @@ public class JFrameCadastroCarro extends javax.swing.JFrame {
         jLabelTipoPneu = new javax.swing.JLabel();
         jLabelEstaFuncionando = new javax.swing.JLabel();
         jLabelPermitidaCirculacao = new javax.swing.JLabel();
-        jTextFieldCodigo = new javax.swing.JTextField();
         jSpinner1 = new javax.swing.JSpinner();
         jButtonSalvar = new javax.swing.JButton();
         jButtonCancelar = new javax.swing.JButton();
@@ -111,6 +110,7 @@ public class JFrameCadastroCarro extends javax.swing.JFrame {
         jFormattedTextFieldDataCompra = new javax.swing.JFormattedTextField();
         jSpinnerAnoLancamento = new javax.swing.JSpinner();
         jSpinnerAnoFabricacao = new javax.swing.JSpinner();
+        jLabelCodigo2 = new javax.swing.JLabel();
         jMenuBar1 = new javax.swing.JMenuBar();
 
         jMenu3.setText("jMenu3");
@@ -233,17 +233,9 @@ public class JFrameCadastroCarro extends javax.swing.JFrame {
         jLabelPermitidaCirculacao.setForeground(new java.awt.Color(255, 0, 51));
         jLabelPermitidaCirculacao.setText("Permitida Circulação");
 
-        jTextFieldCodigo.setBackground(new java.awt.Color(102, 102, 102));
-        jTextFieldCodigo.setForeground(new java.awt.Color(0, 255, 255));
-        jTextFieldCodigo.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jTextFieldCodigoActionPerformed(evt);
-            }
-        });
-
         jButtonSalvar.setBackground(new java.awt.Color(0, 0, 0));
         jButtonSalvar.setFont(new java.awt.Font("Dialog", 1, 14)); // NOI18N
-        jButtonSalvar.setForeground(new java.awt.Color(0, 204, 0));
+        jButtonSalvar.setForeground(new java.awt.Color(0, 255, 0));
         jButtonSalvar.setText("Salvar");
         jButtonSalvar.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -388,8 +380,8 @@ public class JFrameCadastroCarro extends javax.swing.JFrame {
                                         .addGap(0, 0, Short.MAX_VALUE))))
                             .addGroup(layout.createSequentialGroup()
                                 .addComponent(jLabelCodigo, javax.swing.GroupLayout.PREFERRED_SIZE, 54, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(jTextFieldCodigo, javax.swing.GroupLayout.PREFERRED_SIZE, 87, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(33, 33, 33)
+                                .addComponent(jLabelCodigo2, javax.swing.GroupLayout.PREFERRED_SIZE, 106, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addGap(0, 0, Short.MAX_VALUE))
                             .addGroup(layout.createSequentialGroup()
                                 .addComponent(jLabelNome, javax.swing.GroupLayout.PREFERRED_SIZE, 46, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -451,7 +443,7 @@ public class JFrameCadastroCarro extends javax.swing.JFrame {
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                         .addComponent(jLabelCodigo, javax.swing.GroupLayout.PREFERRED_SIZE, 34, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addComponent(jTextFieldCodigo, javax.swing.GroupLayout.PREFERRED_SIZE, 34, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addComponent(jLabelCodigo2, javax.swing.GroupLayout.PREFERRED_SIZE, 34, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                         .addComponent(jLabelRenavam, javax.swing.GroupLayout.PREFERRED_SIZE, 35, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addComponent(jTextFieldRenavam, javax.swing.GroupLayout.PREFERRED_SIZE, 35, javax.swing.GroupLayout.PREFERRED_SIZE)))
@@ -527,10 +519,6 @@ public class JFrameCadastroCarro extends javax.swing.JFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    private void jTextFieldCodigoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTextFieldCodigoActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_jTextFieldCodigoActionPerformed
-
     private void jButtonCancelarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonCancelarActionPerformed
         dispose();        
     }//GEN-LAST:event_jButtonCancelarActionPerformed
@@ -547,8 +535,15 @@ public class JFrameCadastroCarro extends javax.swing.JFrame {
         meuCarro.setAnoFabricacao(Short.parseShort(
                 jSpinnerAnoFabricacao.getValue().toString()));
         
-        meuCarro.setFabricante(String.valueOf(
-                jTextFieldFabricante.getSelectedText()));
+        meuCarro.setPlaca(jTextFieldPlaca.getText());
+        
+        meuCarro.setCor(jTextFieldCor.getText());
+        
+        meuCarro.setChassi(jTextFieldChassi.getText());
+        
+        meuCarro.setDescricao(jTextAreaDescricao.getText());
+        
+        meuCarro.setFabricante(jTextFieldFabricante.getText());
         //21/08/2017
         String dataCompra = jFormattedTextFieldDataCompra.getText();
         int ano = Integer.parseInt(dataCompra.substring(6, 10));
@@ -561,12 +556,24 @@ public class JFrameCadastroCarro extends javax.swing.JFrame {
         meuCarro.setEstaFuncional(jRadioButtonEstaFuncionandoSim.isSelected());
         
         CarroDAO dao = new CarroDAO();
-        int codigo = dao.inserir(meuCarro);
-        if(codigo!= Utilitarios.NAO_FOI_POSSIVEL_INSERIR){
-            JOptionPane.showMessageDialog(null, "Cadastro realizado com sucesso");
-        }else{
-            JOptionPane.showMessageDialog(null, "Não foi possivel inserir");
+        if(!jLabelCodigo2.getText().equals("")){
+            meuCarro.setId(Integer.parseInt(jLabelCodigo2.getText()));
+            int codigo = dao.inserir(meuCarro);
+            if(codigo != Utilitarios.NAO_FOI_POSSIVEL_ALTERAR){
+                JOptionPane.showMessageDialog(null, "Alteração realizado com sucesso");
+                jLabelCodigo2.setText(String.valueOf(codigo));
+            }else{
+                JOptionPane.showMessageDialog(null, "Não foi Possivel Alterar");
         }
+        }else{
+            int codigo = dao.inserir(meuCarro);
+            if(codigo != Utilitarios.NAO_FOI_POSSIVEL_INSERIR){            
+                JOptionPane.showMessageDialog(null, "Cadastro realizado com sucesso");
+                jLabelCodigo2.setText(String.valueOf(codigo));
+            }else{
+                JOptionPane.showMessageDialog(null, "Não foi possivel inserir");
+            }    
+}
     }//GEN-LAST:event_jButtonSalvarActionPerformed
 
     /**
@@ -625,6 +632,7 @@ public class JFrameCadastroCarro extends javax.swing.JFrame {
     private javax.swing.JLabel jLabelAnoLancamento;
     private javax.swing.JLabel jLabelChassi;
     private javax.swing.JLabel jLabelCodigo;
+    private javax.swing.JLabel jLabelCodigo2;
     private javax.swing.JLabel jLabelCor;
     private javax.swing.JLabel jLabelDataCompra;
     private javax.swing.JLabel jLabelDescricao;
@@ -673,7 +681,6 @@ public class JFrameCadastroCarro extends javax.swing.JFrame {
     private javax.swing.JSpinner jSpinnerAnoLancamento;
     private javax.swing.JTextArea jTextAreaDescricao;
     private javax.swing.JTextField jTextFieldChassi;
-    private javax.swing.JTextField jTextFieldCodigo;
     private javax.swing.JTextField jTextFieldCor;
     private javax.swing.JTextField jTextFieldFabricante;
     private javax.swing.JTextField jTextFieldNome;

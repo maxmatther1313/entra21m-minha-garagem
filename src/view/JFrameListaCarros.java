@@ -1,8 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package view;
 
 import dao.CarroDAO;
@@ -50,8 +45,8 @@ public class JFrameListaCarros extends JFrame implements JFrameComportamentosInt
                 return false;
             }
         };
-        modelo.addColumn("Fabricante");
         modelo.addColumn("Nome");
+        modelo.addColumn("Fabricante");
         modelo.addColumn("Placa");
         modelo.addColumn("Cor");
         
@@ -74,11 +69,11 @@ public class JFrameListaCarros extends JFrame implements JFrameComportamentosInt
     public void popularJTable(){
         ArrayList<Carro>carros = new CarroDAO().retornarListagem();
         for (Carro carro : carros){
-            modelo .addRow(new Object[]{
-                carro.getFabricante(),
+            modelo .addRow(new Object[]{                
                 carro.getNome(),
+                carro.getFabricante(),
                 carro.getPlaca(),
-                carro.getCor()
+                carro.getCor()                   
             });
         }        
     }
